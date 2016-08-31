@@ -10,6 +10,7 @@
 " Vundle stuff
 " ========================================================================
 set nocompatible " Required by vundle
+set t_Co=256 " becofre color stuff
 filetype off     " Required by vundle
 
 " set the runtime path to include Vundle and initialize
@@ -22,23 +23,19 @@ Plugin 'gmarik/Vundle.vim'
 " My bundles
 Plugin 'scrooloose/nerdtree'        " Project Drawer
 Plugin 'ervandew/supertab'          " Tab completion
-Plugin 'tpope/vim-bundler'          " Gemfiles
 Plugin 'kien/ctrlp.vim'             " Fuzzy finder
 Plugin 'godlygeek/tabular'          " Align text
 Plugin 'vim-scripts/loremipsum'     " Lorem ipsum
 
 " Syntax
-Plugin 'Shutnik/jshint2.vim'        " JSHint
+Plugin 'mxw/vim-jsx'                " JSX
 Plugin 'mattn/emmet-vim'            " html/css
-Plugin 'kchmck/vim-coffee-script'   " Coffeescript
 Plugin 'tpope/vim-rails'            " Rails
 Plugin 'vim-ruby/vim-ruby'          " Ruby
 Plugin 'plasticboy/vim-markdown'    " Markdown
 Plugin 'eslint/eslint'              " E6
-Plugin 'dsawardekar/ember.vim'      " Emberjs
 Plugin 'mustache/vim-mustache-handlebars' " Handlebars
-Plugin 'rust-lang/rust.vim'         " rustlang
-Plugin 'scrooloose/syntastic'       " Syntax highlighter
+Plugin 'vim-airline/vim-airline'
 
 " Colors
 Plugin 'nanotech/jellybeans.vim'
@@ -102,10 +99,18 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+"jsx
+let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+let g:syntastic_javascript_checkers = ['eslint']
+
 "===== no more node_modules in drawer
 let NERDTreeIgnore = ['\.node_modules\/']
 
 let mapleader = ","
+
+" no bullshit in ctlp or nerdtree
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+let NERDTreeIgnore=['node_modules', 'DS_Store', 'git']
 
 " Toggle spell checking on and off with `,s`
 nmap <silent> <leader>sp :set spell!<CR>
@@ -243,24 +248,6 @@ if has("autocmd")
       \   exe "normal g`\"" |
       \ endif
 
-  augroup END
-
-  augroup rubystuff
-    " Clear old autocmds in group
-    autocmd!
-    " autoindent with two spaces, always expand tabs
-    autocmd FileType rust,ruby,eruby,yaml setlocal ai sw=2 sts=2 et
-    autocmd FileType rust,ruby,eruby,yaml setlocal path+=lib
-    autocmd FileType rust,ruby,eruby,yaml setlocal colorcolumn=80
-    " Make ?s part of words
-    autocmd FileType ruby,eruby,yaml setlocal iskeyword+=?
-
-  augroup END
-
-  augroup xmpfilter
-    autocmd!
-    autocmd FileType ruby nmap <buffer> <D-M> <Plug>(xmpfilter-mark)
-    autocmd FileType ruby nmap <buffer> <D-R> <Plug>(xmpfilter-run)
   augroup END
 
   augroup markdown
